@@ -1,0 +1,102 @@
+{% load picwall %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .nav {
+            height: 50px;
+            background-color: cornflowerblue;
+        }
+
+        .fon {
+            text-align: center;
+            line-height: 50px;
+            color: white;
+        }
+
+        .container {
+            margin: 0 auto;
+            width: 1100px;
+            background-color: palegreen;
+        }
+
+        .item {
+            width: 25%;
+            float: left;
+        }
+
+        .item img {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="nav">
+    <h2 class="fon">瀑布墙</h2>
+</div>
+<div class="container" id="container">
+    <div class="item">
+    </div>
+    <div class="item">
+    </div>
+    <div class="item">
+    </div>
+    <div class="item">
+    </div>
+</div>
+</body>
+<script src="/static/jquery-3.3.1.min.js"></script>
+<script>
+    var obj = new master();
+    $(function () {
+        obj.initImg();
+        obj.scrollEvent();
+    });
+
+    function master() {
+        this.nid = 0;
+        this.loastposition = 3;
+        this.initImg = function () {
+            var that = this; //调用对象时,this为该对象；
+            $.ajax({
+                url: 'getdata.html',
+                type: 'GET',
+                data: {'nid':that.nid},
+                dataType: 'JSON',
+                success: function (arg) {
+                    var img_list = arg.data;
+                    $.each(arg.data, function (index, value) {
+                        var eqv = (index+that.loastposition+1)%4;
+                        console.log('index',index,'eqv',eqv);
+                        var tag = document.createElement('img');
+                        tag.src = value.src;
+                        $('#container').children().eq(eqv).append(tag);
+                        //当循环到最后一个图片时，将图片ID赋值给NID
+                        if (index+1==img_list.length) {
+                            that.nid = value.id;
+                            that.loastposition = eqv;
+                        }
+                    })
+                }
+            });
+        };
+        this.scrollEvent = function () {
+            var that = this;
+            $(window).scroll(function () {
+                //文档高度
+                var docHeight = $(document).height();
+                //窗口高度
+                var winHeight = $(window).height();
+                //滑动条滑动的高度
+                var scrollTop = $(window).scrollTop();
+                if (winHeight + scrollTop == docHeight)
+                {
+                    that.initImg();
+                }
+            })
+        }
+    }
+</script>
+</html>

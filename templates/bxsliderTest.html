@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <script src="/static/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+</head>
+<body>
+    <div class="slide" >
+        <div><img src="/static/images/1.jpg" title="虾1"></div>
+        <div><img src="/static/images/1CFC97B8-092B-432C-83B8-6CFD027D65EE-518-000000605076042E_tmp.jpg" title="虾2"></div>
+        <div><img src="/static/images/6DEB618B-7441-4B70-98BD-92058CAAA219-518-000000604B372198_tmp.jpg" title="螃蟹"></div>
+        <div><img src="/static/images/7F1C7866-E837-4EBE-8090-FBA1DC1B1D4E-814-000000748157BBCD_tmp.jpg" title="票根"></div>
+
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('.slide').bxSlider({
+                slideWidth: 500,
+                auto:true,
+                speed:300,
+                pager:true
+            });
+        });
+
+    </script>
+</body>
+</html>

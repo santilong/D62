@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .container {
+            height: 50px;
+            line-height: 50px;
+        }
+        .item {
+            position: relative;
+            width: 32px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="item">赞</div>
+    </div>
+    <div class="container">
+        <div class="item">赞</div>
+    </div>
+    <script src="/static/jquery-3.3.1.min.js"></script>
+    <script>
+        $('.item').click(function () {
+            addSpan(this);
+        });
+        function addSpan(self) {
+            var fontSize = 15;
+            var top = 0;
+            var right = 0;
+            var opacity = 1;
+            var tag = document.createElement('span');
+            $(tag).text('+1');
+            $(tag).css('color','green');
+            $(tag).css('position','absolute');
+            $(tag).css('font-size',fontSize + 'px');
+            $(tag).css('top',top + 'px');
+            $(tag).css('right',right + 'px');
+            $(tag).css('opacity',opacity);
+            $(self).append(tag);
+
+            var obj = setInterval(function () {
+            fontSize = fontSize + 5;
+            console.log(fontSize);
+            top = top - 10;
+            right = right - 10;
+            opacity = opacity - 0.2;
+
+            $(tag).css('font-size',fontSize + 'px');
+            $(tag).css('top',top + 'px');
+            $(tag).css('right',right + 'px');
+            $(tag).css('opacity',opacity);
+
+            if(opacity < 0) {
+                clearInterval(obj);
+                $(tag).remove();
+            }
+        },100);
+    }
+    </script>
+</body>
+</html>

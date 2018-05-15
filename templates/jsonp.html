@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div type="text" id="content"></div>
+    <input type="button" value="本地ajax获取数据" onclick="jsonp1()">
+    <input type="button" value="获取本地另外一个9000服数据" onclick="jsonp2()">
+    <input type="button" value="ajax获取本地另外一个9000服数据" onclick="jsonp3()">
+    <input type="button" value="cors获取本地另外一个9000服数据" onclick="cors()">
+    <script src="/static/jquery-3.3.1.min.js"></script>
+    <script>
+        function jsonp1() {
+            $.ajax({
+                url: '/jsonpcommit.html',
+                type: 'GET',
+                data: {nid:2},
+                success:function (arg) {
+                    console.log(arg);
+                    $('#content').html(arg);
+                }
+            })
+        }
+        function jsonp2() {
+            var tag = document.createElement('script');
+            tag.src = 'http://127.0.0.1:9000/index/';
+            document.head.appendChild(tag); //创建了script标签就会向远程发一次请求;
+            document.head.removeChild(tag);
+{#            $.ajax({#}
+{#                url: 'http://127.0.0.1:9000/index/',#}
+{#                type: 'GET',#}
+{#                data: {nid:2},#}
+{#                success:function (arg) {#}
+{#                    console.log(arg);#}
+{#                    $('#content').html(arg);#}
+{#                }#}
+{#            })#}
+        }
+        function jsonp3() {
+            $.ajax({
+                url: 'http://127.0.0.1:9000/index.html',
+                type: 'GET',
+                dataType:'JSONP',
+                jsonp:'callback',
+                jsonpCallback:'oxo'
+            })
+        }
+        function oxo(arg) {
+            $('#content').html(arg);
+        }
+        function cors() {
+            $.ajax({
+                url:'http://127.0.0.1:9000/index.html',
+                type: 'GET',
+                success: function (arg) {
+                    console.log(arg);
+                }
+            })
+
+        }
+    </script>
+</body>
+</html>

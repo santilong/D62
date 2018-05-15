@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .btn {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: orange;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h3>Jquery的ajax提交以及原生XMLHttpRequest的Ajax提交</h3>
+    <a class="btn" onclick="ajaxsubmit1()">jQuery Ajax</a>
+    <a class="btn" onclick="ajaxsubmit2()">XMLHttpRequest Ajax</a>
+
+    <h3>iframe + form的伪ajax提交</h3>
+    <iframe name="ifra" id="iframe" onload="loadIframe(this);"></iframe>
+    <form action="ajax1.html" method="post" target="ifra">
+        <input type="text" name="root">
+        <input type="submit" value="提交">
+    </form>
+
+
+    <h3>jQuer和XMLHttpRequest上传数据和文件</h3>
+    <input type="file" id="img">
+    <a class="btn" onclick="jQueryFormDataTest();">jQuery上传</a>
+    <a class="btn" onclick="XMLHttpRequestFormDataTest();">XMLHttpRequest上传</a>
+
+
+    <h3>iframe + form上传数据和文件</h3>
+    <iframe name="ifra1" id="iframe1"></iframe>
+    <form action="ajax1.html" method="post" target="ifra1" enctype="multipart/form-data" id="fm1">
+        <input type="text" name="k1">
+        <input type="text" name="k2">
+        <input type="file" name="k3">
+        <a onclick="ajaxsubmit3();">提交</a>
+    </form>
+
+    <script src="/static/jquery-3.3.1.min.js"></script>
+    <script>
+        function ajaxsubmit3() {
+            document.getElementById('iframe1').onload = loadIframe1;
+            $('#fm1').submit();
+        }
+        function loadIframe1() {
+            var c2=this.contents().find('body').html();
+            var obj = JSON.parse(c2);
+            console.log(obj);
+        }
+
+        function jQueryFormDataTest() {
+            //var fileobj = document.getElementById('img').files[0];
+            var fileobj = $('#img')[0].files[0];
+            var data = new FormData();
+            data.append('k1','v1');
+            data.append('k2','v2');
+            data.append('k3',fileobj);
+            $.ajax({
+                url: 'ajax1.html',
+                type: 'POST',
+                data:data,
+                success:function (arg) {
+                    console.log(arg)
+                },
+                processData: false,
+                contentType: false
+            })
+        }
+        function XMLHttpRequestFormDataTest() {
+            var fileobj = document.getElementById('img').files[0];
+            var data = new FormData();
+            data.append('k1','o');
+            data.append('k2','k');
+            data.append('k3',fileobj);
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    console.log(xhr.responseText)
+                }
+            };
+            xhr.open('POST','ajax1.html');
+            xhr.send(data);
+        }
+        function loadIframe(ths) {
+            //通过DOM取：
+            var c1 = ths.contentWindow.document.body.innerHTML;
+            console.log('c1',c1);
+            //通过jQuery取:
+            var c2 = $(ths).contents().find('body').html();
+            console.log('c2',c2);
+            var obj = JSON.parse(c2);
+        }
+        function ajaxsubmit2() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange=function () {
+                if (xhr.readyState == 4) {
+                    console.log(xhr.responseText)
+                }
+            };
+            xhr.open('GET','/ajax1.html?p=123');
+            xhr.send(null);
+        };
+
+    </script>
+</body>
+</html>

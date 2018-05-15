@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h3>iframe + form上传图片及预览实战</h3>
+    <iframe style="display: " name="ifra1" id="iframe1"></iframe>
+    <form action="uploaded" method="post" target="ifra1" enctype="multipart/form-data" id="fm1">
+        <input type="file" name="k3" onchange="upload_file();">
+    </form>
+    <hr style="background-color: green">
+    <div id="preview">预览
+    </div>
+
+    <script src="/static/jquery-3.3.1.min.js"></script>
+    <script>
+        function upload_file() {
+            document.getElementById('iframe1').onload = uploaded;
+            $('#fm1').submit();
+        }
+        function uploaded() {
+            var arg = $(this).contents().find('body').html();
+            var obj = JSON.parse(arg);
+            var tag = document.createElement('img');
+            tag.src = obj.data;
+            $('#preview').empty().append(tag);
+        }
+    </script>
+</body>
+</html>
